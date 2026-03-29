@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamer Identity Portal | Gijduvon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Minimalistic Color Palette */
+            --bg-color: #0d1117;       /* Dark charcoal */
+            --panel-bg: #161b22;       /* Slightly lighter charcoal */
+            --text-primary: #f0f6fc;   /* Off-white */
+            --text-secondary: #8b9bb4; /* Cool gray */
+            --accent: #58a6ff;         /* Soft, modern blue */
+            --accent-dim: rgba(88, 166, 255, 0.1);
+            --border-color: #30363d;   /* Subtle dark gray */
+            --success: #3fb950;        /* Soft green */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            font-weight: 400;
+        }
+
+        /* ----- Main Containers ----- */
+        .container {
+            width: 400px;
+            background-color: var(--panel-bg);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .hidden {
+            display: none !important;
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        /* ----- Typography ----- */
+        h2 {
+            font-family: 'Syncopate', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-primary);
+            font-size: 1.4em;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            font-family: 'Syncopate', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            font-size: 1em;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-size: 0.8em;
+            color: var(--text-secondary);
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        /* ----- Forms & Inputs ----- */
+        input, select {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 10px;
+            background-color: #010409; /* Deep black */
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        /* ----- Buttons ----- */
+        button {
+            width: 100%;
+            padding: 16px;
+            background-color: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+            margin-top: 15px;
+            transition: background-color 0.2s, color 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: var(--accent);
+            color: var(--bg-color);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .secondary-btn {
+            border-color: var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .secondary-btn:hover {
+            background-color: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        /* ----- Main UI (After Login) ----- */
+        #main-ui {
+            width: 900px;
+            display: flex;
+            gap: 40px;
+            text-align: left;
+            padding: 50px;
+        }
+
+        .panel-left, .panel-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ----- Gamer Card ----- */
+        .card {
+            background-color: #0a0c16; /* Near black */
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, transparent 50%, var(--accent-dim) 50%);
+            border-radius: 0 0 0 100px;
+        }
+
+        #uNick {
+            margin: 0;
+            color: var(--text-primary);
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+
+        #uGame {
+            color: var(--accent);
+            font-size: 1em;
+            margin-top: 5px;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.75em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        #uID {
+            color: var(--text-secondary);
+            font-family: monospace;
+            font-size: 1.1em;
+            background-color: #010409;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        /* ----- Leaderboard ----- */
+        .leaderboard {
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .leaderboard::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .leaderboard::-webkit-scrollbar-thumb {
+            background-color: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .lb-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95em;
+            transition: background-color 0.2s;
+        }
+
+        .lb-item:hover {
+            background-color: rgba(255,255,255,0.02);
+        }
+
+        .lb-item b {
+            color: var(--text-secondary);
+            margin-right: 10px;
+        }
+
+        .lb-rank {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .lb-winrate {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-left: 8px;
+        }
+
+        /* ----- Game Tabs ----- */
+        .game-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .game-tab {
+            flex: 1;
+            padding: 10px;
+            background-color: #010409;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8em;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .game-tab:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+
+        .active-tab {
+            background-color: var(--accent-dim);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+<div id="auth-ui" class="container">
+    <h2>Access Portal</h2>
+    
+    <div id="login-form">
+        <input type="text" id="loginID" placeholder="7 xonali ID kiriting" maxlength="7">
+        <button onclick="login()">Tizimga Kirish</button>
+        <p onclick="toggleForm()" style="cursor: pointer; margin-top: 20px;">Akkauntingiz yo'qmi? <b>Ro'yxatdan o'ting</b></p>
+    </div>
+
+    <div id="reg-form" class="hidden">
+        <input type="text" id="regNick" placeholder="Nickname">
+        <select id="regGame">
+    <option value="" disabled selected>Select your Main Game</option>
+    <option value="CS2">Counter-Strike 2</option>
+    <option value="Dota 2">Dota 2</option>
+    <option value="Valorant">Valorant</option>
+    <option value="League of Legends">League of Legends</option>
+    <option value="Apex Legends">Apex Legends</option>
+</select>
+        <input type="number" id="regWin" placeholder="Haqiqiy Win Rate % (0-100)" min="0" max="100" oninput="if(value>100)value=100;if(value<0)value=0">
+        
+        <label>Statistika skrinshoti (JPG/PNG):</label>
+        <input type="file" id="regEvidence" accept="image/*">
+        
+        <button onclick="register()">Kodni olish va qo'shilish</button>
+        <p onclick="toggleForm()" style="cursor: pointer; margin-top: 20px;">ID bormi? <b>Tizimga kiring</b></p>
+    </div>
+</div>
+
+<div id="main-ui" class="container hidden">
+    <div class="panel-left">
+        <h3>Shaxsiy Karta</h3>
+        <div class="card">
+            <h2 id="uNick">GamerTag</h2>
+            <p id="uGame">Game Title</p>
+            
+            <div class="card-stats">
+                <div class="stat-item">
+                    <div class="stat-label">Rank</div>
+                    <div class="stat-value" id="uRank">Bronze</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Win Rate</div>
+                    <div class="stat-value" id="uWin">0%</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <span class="stat-label">Gamer ID:</span><br>
+                <span id="uID">#1234567</span>
+            </div>
+        </div>
+        <button onclick="location.reload()" class="secondary-btn">Tizimdan Chiqish</button>
+    </div>
+
+    <div class="panel-right">
+        <h3>🏆 Reytinglar</h3>
+        
+        <div class="game-tabs">
+    <button onclick="loadLeaderboard('CS2')" class="game-tab active-tab" id="tab-CS2">CS2</button>
+    <button onclick="loadLeaderboard('Dota 2')" class="game-tab" id="tab-Dota">Dota 2</button>
+    <button onclick="loadLeaderboard('Valorant')" class="game-tab" id="tab-Valorant">Valorant</button>
+    <button onclick="loadLeaderboard('League of Legends')" class="game-tab" id="tab-LoL">LoL</button>
+    <button onclick="loadLeaderboard('Apex Legends')" class="game-tab" id="tab-Apex">Apex</button>
+</div>
+
+        <div id="leaderboard" class="leaderboard">
+            </div>
+    </div>
+</div>
+
+<script>
+    function toggleForm() {
+        document.getElementById('login-form').classList.toggle('hidden');
+        document.getElementById('reg-form').classList.toggle('hidden');
+    }
+
+    async function register() {
+    const nick = document.getElementById('regNick').value;
+    const game = document.getElementById('regGame').value;
+    const winrate = parseInt(document.getElementById('regWin').value); // Son ko'rinishiga keltirish
+    const fileInput = document.getElementById('regEvidence');
+
+    // Win Rate 0 va 100 oralig'ida ekanligini tekshirish
+    if (isNaN(winrate) || winrate < 0 || winrate > 100) {
+        return alert("Win Rate faqat 0 va 100 oralig'ida bo'lishi shart!");
+    }
+
+    if(!nick || !game || !fileInput.files[0]) {
+        return alert("Iltimos, barcha maydonlarni to'ldiring!");
+    }
+
+    // Qolgan FormData va Fetch qismi o'zgarishsiz qoladi...
+    const formData = new FormData();
+    formData.append('nick', nick);
+    formData.append('game', game);
+    formData.append('winrate', winrate);
+    formData.append('evidence', fileInput.files[0]);
+    
+    // ... fetch davomi
+}
+
+    async function login() {
+        const id = document.getElementById('loginID').value;
+        if(!id) return alert("7 xonali ID kiriting!");
+
+        try {
+            const res = await fetch('http://localhost:3000/api/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ gamerID: id })
+            });
+
+            const data = await res.json();
+            if(data.error) return alert(data.error);
+
+            // UI almashtirish (animation)
+            document.getElementById('auth-ui').classList.add('hidden');
+            setTimeout(() => {
+                document.getElementById('auth-ui').style.display = 'none';
+                document.getElementById('main-ui').classList.remove('hidden');
+                document.getElementById('main-ui').style.display = 'flex';
+            }, 400);
+
+            // Ma'lumotlarni to'ldirish
+            document.getElementById('uNick').innerText = data.user.nick;
+            document.getElementById('uGame').innerText = data.user.game;
+            document.getElementById('uRank').innerText = data.user.rank;
+            document.getElementById('uWin').innerText = data.user.winrate + '%';
+            document.getElementById('uID').innerText = `#${data.user.id}`;
+
+            // Kirganda avtomatik o'zining o'yini bo'yicha reytingni ko'rsatish
+            loadLeaderboard(data.user.game);
+        } catch (e) {
+            alert("Tizimga kirishda xatolik!");
+        }
+    }
+
+    async function loadLeaderboard(gameName) {
+        try {
+            const res = await fetch(`http://localhost:3000/api/leaderboard/${gameName}`);
+            const list = await res.json();
+            const lb = document.getElementById('leaderboard');
+            lb.innerHTML = '';
+
+            if (list.length === 0) {
+                lb.innerHTML = `<p style="color:#666; text-align:center; padding-top:20px;">Hozircha geymerlar yo'q</p>`;
+            } else {
+                list.forEach((g, i) => {
+                    lb.innerHTML += `
+                        <div class="lb-item">
+                            <span><b>${i + 1}.</b> ${g.nick}</span>
+                            <div>
+                                <span class="lb-rank">${g.rank}</span>
+                                <span class="lb-winrate">(${g.winrate}%)</span>
+                            </div>
+                        </div>`;
+                });
+            }
+
+            // Tablarni vizual yangilash
+            document.querySelectorAll('.game-tab').forEach(btn => {
+                btn.classList.remove('active-tab');
+                if(btn.innerText === gameName) btn.classList.add('active-tab');
+            });
+        } catch (e) {
+            console.error("Reytingni yuklashda xatolik!");
+        }
+    }
+</script>
+
+</body>
+</html>
