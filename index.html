@@ -396,29 +396,50 @@
     }
 
     async function register() {
-    const nick = document.getElementById('regNick').value;
-    const game = document.getElementById('regGame').value;
-    const winrate = parseInt(document.getElementById('regWin').value); // Son ko'rinishiga keltirish
-    const fileInput = document.getElementById('regEvidence');
+        const nick = document.getElementById('regNick').value;
+        const game = document.getElementById('regGame').value;
+        const winrateInput = document.getElementById('regWin').value;
+        const fileInput = document.getElementById('regEvidence');
 
-    // Win Rate 0 va 100 oralig'ida ekanligini tekshirish
-    if (isNaN(winrate) || winrate < 0 || winrate > 100) {
-        return alert("Win Rate faqat 0 va 100 oralig'ida bo'lishi shart!");
+        // Ma'lumotlar to'liqligini tekshirish
+        if (!nick || !game || !winrateInput || !fileInput.files[0]) {
+            return alert("Iltimos, barcha maydonlarni to'ldiring va skrinshot yuklang!");
+        }
+
+        const winrate = parseInt(winrateInput);
+        if (isNaN(winrate) || winrate < 0 || winrate > 100) {
+            return alert("Win Rate 0 va 100 oralig'ida bo'lishi shart!");
+        }
+
+        const formData = new FormData();
+        formData.append('nick', nick);
+        formData.append('game', game);
+        formData.append('winrate', winrate);
+        formData.append('evidence', fileInput.files[0]);
+
+        try {
+            // Serverga yuborish
+            const res = await fetch('http://localhost:3000/api/register', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await res.json();
+            
+            if (data.error) {
+                alert(data.error);
+            } else if (data.gamer && data.gamer.id) {
+                // MANA SHU YERDA 7 XONALI ID CHIQADI
+                alert(`TABRIKLAYMIZ! 🎉\nSizning Global ID: ${data.gamer.id}\n\nUni saqlab qo'ying, tizimga kirish uchun aynan shu ID kerak!`);
+                location.reload(); 
+            } else {
+                alert("Xatolik: Server javobida ID topilmadi.");
+            }
+        } catch (e) {
+            alert("Serverga ulanishda xatolik yuz berdi! Server yoqilganiga ishonch hosil qiling.");
+            console.error(e);
+        }
     }
-
-    if(!nick || !game || !fileInput.files[0]) {
-        return alert("Iltimos, barcha maydonlarni to'ldiring!");
-    }
-
-    // Qolgan FormData va Fetch qismi o'zgarishsiz qoladi...
-    const formData = new FormData();
-    formData.append('nick', nick);
-    formData.append('game', game);
-    formData.append('winrate', winrate);
-    formData.append('evidence', fileInput.files[0]);
-    
-    // ... fetch davomi
-}
 
     async function login() {
         const id = document.getElementById('loginID').value;
@@ -434,7 +455,7 @@
             const data = await res.json();
             if(data.error) return alert(data.error);
 
-            // UI almashtirish (animation)
+            // UI almashtirish
             document.getElementById('auth-ui').classList.add('hidden');
             setTimeout(() => {
                 document.getElementById('auth-ui').style.display = 'none';
@@ -449,7 +470,6 @@
             document.getElementById('uWin').innerText = data.user.winrate + '%';
             document.getElementById('uID').innerText = `#${data.user.id}`;
 
-            // Kirganda avtomatik o'zining o'yini bo'yicha reytingni ko'rsatish
             loadLeaderboard(data.user.game);
         } catch (e) {
             alert("Tizimga kirishda xatolik!");
@@ -478,10 +498,11 @@
                 });
             }
 
-            // Tablarni vizual yangilash
             document.querySelectorAll('.game-tab').forEach(btn => {
                 btn.classList.remove('active-tab');
-                if(btn.innerText === gameName) btn.classList.add('active-tab');
+                if(btn.innerText === gameName || btn.id === `tab-${gameName.replace(/\s+/g, '')}`) {
+                    btn.classList.add('active-tab');
+                }
             });
         } catch (e) {
             console.error("Reytingni yuklashda xatolik!");

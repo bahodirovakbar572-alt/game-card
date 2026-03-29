@@ -5,5 +5,14 @@
     "game": "CS2",
     "winrate": "100",
     "rank": "IMMORTAL"
+  },
+  {
+    "id": "2037497",
+    "nick": "InfortXuff",
+    "game": "CS2",
+    "winrate": 12,
+    "rank": "BRONZE",
+    "proof": "uploads\\1774781336012-Screenshot 2026-03-29 101352.png",
+    "status": "verified"
   }
 ]
